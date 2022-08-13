@@ -1,0 +1,35 @@
+name: Lint Commit Messages
+on:
+  workflow_call:
+    inputs:
+      total_commits:
+        required: true
+        type: string
+jobs:
+  lint_commits:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 18
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Needs all PR's commits + 1
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          yarn add @commitlint/cli @commitlint/config-conventional
+          echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+
+      - name: Lint Commit Messages (conventional commit)
+        run: |
+          NUM_COMMITS_BEHIND=$((${{ inputs.total_commits }} - 1))
+          echo "From HEAD~$NUM_COMMITS_BEHIND"
+
+          yarn run commitlint --from HEAD~$NUM_COMMITS_BEHIND --to HEAD
