@@ -1,0 +1,8 @@
+on: [pull_request]
+name: Pull Request validation
+
+jobs:
+  lint-commits:
+    uses: ./.github/workflows/lint-commits.yml
+    with:
+      total_commits: ${{ github.event.pull_request.commits }}
