@@ -3,6 +3,6 @@ name: Pull Request validation
 
 jobs:
   lint-commits:
-    uses: ./.github/workflows/lint-commits.yml
+    uses: ./.github/workflows/lint.yml
     with:
-      total_commits: ${{ github.event.pull_request.commits }}
+      commitlint-args: --from HEAD~$((${{ github.event.pull_request.commits }} - 1)) --to HEAD
