@@ -1,8 +1,8 @@
-name: Lint Commit Messages
+name: Lint
 on:
   workflow_call:
     inputs:
-      total_commits:
+      commitlint-args:
         required: true
         type: string
 jobs:
@@ -28,8 +28,4 @@ jobs:
           echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
 
       - name: Lint Commit Messages (conventional commit)
-        run: |
-          NUM_COMMITS_BEHIND=$((${{ inputs.total_commits }} - 1))
-          echo "From HEAD~$NUM_COMMITS_BEHIND"
-
-          yarn run commitlint --from HEAD~$NUM_COMMITS_BEHIND --to HEAD
+        run: yarn run commitlint ${{ inputs.commitlint-args }}
