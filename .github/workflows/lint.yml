@@ -12,7 +12,7 @@ jobs:
       NODE_VERSION: 18
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Needs all PR's commits + 1
           fetch-depth: 0
